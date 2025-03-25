@@ -49,20 +49,86 @@ void print(const CycleList<int>& list) {
 /// Отображает меню доступных команд для работы с циклическим списком.
 /// </summary>
 void Menu() {
-    cout << "==============================\n";
-    cout << "| 1. добавить элемент        |\n";
-    cout << "| 2. вставить элемент        |\n";
-    cout << "| 3. удалить элемент по индексу |\n";
-    cout << "| 4. получить элемент по индексу |\n";
-    cout << "| 5. посчитать количество элементов |\n";
-    cout << "| 6. посчитать количество вхождений значения |\n";
-    cout << "| 7. очистить список        |\n";
-    cout << "| 8. вставить 1 перед каждым отрицательным элементом |\n";
-    cout << "| 9. удалить все отрицательные элементы |\n";
-    cout << "| 10. вывод списка        |\n";
-    cout << "| 0. выход                |\n";
-    cout << "==============================\n";
-    cout << "выберите команду: ";
+    cout << "==============================" << endl;
+    cout << "| 1. Добавить элемент        |" << endl;
+    cout << "| 2. Вставить элемент        |" << endl;
+    cout << "| 3. Удалить элемент по номеру |" << endl;
+    cout << "| 4. Получить элемент по номеру |" << endl;
+    cout << "| 5. Посчитать количество элементов |" << endl;
+    cout << "| 6. Посчитать количество вхождений значения |" << endl;
+    cout << "| 7. Очистить список        |" << endl;
+    cout << "| 8. Вставить 1 перед каждым отрицательным элементом |" << endl;
+    cout << "| 9. Удалить все отрицательные элементы |" << endl;
+    cout << "| 10. Вывод списка        |" << endl;
+    cout << "| 0. Выход                |" << endl;
+    cout << "==============================" << endl;
+    cout << "Выберите команду: ";
+}
+
+/// <summary>
+/// Обрабатывает пользовательскую команду
+/// </summary>
+/// <param name="list">Циклический список для работы</param>
+/// <param name="command">Номер команды</param>
+/// <returns>false если нужно завершить программу, true если продолжить</returns>
+bool Commands(CycleList<int>& list, int command) {
+    int value, num;
+
+    switch (command) {
+    case 1:
+        cout << "Введите значение: ";
+        cin >> value;
+        list.add(value);
+        break;
+    case 2:
+        cout << "Введите номер и значение: ";
+        cin >> num >> value;
+        list.insert(num, value);
+        break;
+    case 3:
+        cout << "Введите номер: ";
+        cin >> num;
+        list.removeAt(num);
+        break;
+    case 4:
+        cout << "введите число: ";
+        cin >> num;
+        if (num >= 0 && num < list.count()) {
+            cout << "Элемент с номером " << num << ": " << list[num] << endl;
+        }
+        else {
+            cout << "число вне диапозона комманд " << endl;
+        }
+        break;
+    case 5:
+        cout << "количество элементов: " << list.count() << endl;
+        break;
+    case 6:
+        cout << "введите значение: ";
+        cin >> value;
+        cout << "количество вхождений " << value << ": " << list.count(value) << endl;
+        break;
+    case 7:
+        list.clear();
+        cout << "список очищен" << endl;
+        break;
+    case 8:
+        befNegat(list);
+        cout << "вставлены 1 перед каждым отрицательным элементом" << endl;
+        break;
+    case 9:
+        DelNegatives(list);
+        cout << "отрицательные элементы удалены" << endl;
+        break;
+    case 10:
+        print(list);
+        break;
+    case 0:
+        return false;
+    default:
+        cout << "неправильно введенная команда" << endl;
+    }
+    return true;
 }
 
 /// <summary>
@@ -71,65 +137,14 @@ void Menu() {
 /// <returns>Код завершения программы.</returns>
 int main() {
     CycleList<int> list;
-    int command, value, num;
+    int Commands;
 
     while (true) {
         Menu();
         cin >> command;
 
-        switch (command) {
-        case 1:
-            cout << "введите значение: ";
-            cin >> value;
-            list.add(value);
+        if (!Commands(list, command)) {
             break;
-        case 2:
-            cout << "введите индекс и значение: ";
-            cin >> num >> value;
-            list.insert(num, value);
-            break;
-        case 3:
-            cout << "введите индекс: ";
-            cin >> num;
-            list.removeAt(num);
-            break;
-        case 4:
-            cout << "введите индекс: ";
-            cin >> num;
-            if (num >= 0 && num < list.count()) {
-                cout << "элемент с индексом " << num << ": " << list[num] << endl;
-            }
-            else {
-                cout << "индекс вышел за границы" << endl;
-            }
-            break;
-        case 5:
-            cout << "количество элементов: " << list.count() << endl;
-            break;
-        case 6:
-            cout << "введите значение: ";
-            cin >> value;
-            cout << "количество вхождений " << value << ": " << list.count(value) << endl;
-            break;
-        case 7:
-            list.clear();
-            cout << "список очищен \n";
-            break;
-        case 8:
-            befNegat(list);
-            cout << "вставлены единицы перед каждым отрицательным элементом\n";
-            break;
-        case 9:
-            DelNegatives(list);
-            cout << "все отрицательные элементы удалились \n";
-            break;
-        case 10:
-            print(list);
-            break;
-        case 0:
-            return 0;
-        default:
-            cout << "ошибка. \n";
         }
     }
 
